@@ -1,0 +1,12 @@
+<div class="d-flex flex-column">
+    <label>Country</label>
+    <p-dropdown 
+    [style]="{'width': '250px'}"
+    [options]="country" 
+    [(ngModel)]="selectedCountry" 
+    optionLabel="name" 
+    [showClear]="true"
+    (onChange)="onCountryChange($event)" 
+    placeholder="Select a Country"
+    ></p-dropdown>
+</div>

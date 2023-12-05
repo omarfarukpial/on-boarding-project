@@ -1,0 +1,28 @@
+<div class="container">
+    <div [style]="{'width': '700px'}">
+        <div *ngIf="loading" class="d-flex justify-content-center align-items-center">
+            <p-progressSpinner></p-progressSpinner>
+        </div>
+        <div class="text-center" *ngIf="!results.length && !loading">
+            <h2>
+                Sorry! No result found!
+            </h2>
+        </div>
+        <div class="d-flex flex-column gap-4" *ngIf="!loading && results.length>0">
+            <div class="card" *ngFor="let result of results">
+                <div class="card-body">
+                    <b style="text-decoration: none;">
+                        <a [href]="'#/doc?url='+result.relative_path" (click)="onShowDoc(result.relative_path)">{{result.global_title}}</a>
+                    </b>
+                    <p class="card-text">Collection: {{result.frontend_collection}}</p>
+                    <p class="card-text">Country: {{result.sort_country_one}}</p>
+                </div>
+            </div>  
+            <div class="card flex justify-content-center">
+                <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalResultCount"></p-paginator>
+            </div>
+        </div>
+
+    </div>
+    
+</div>

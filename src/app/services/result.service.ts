@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { EdcaUrlSerializer, EndecapodService, SearchResult } from '@ibfd/endecapod';
 import { AppConfigData } from '../model/config/app-config-data';
 import { AppConfigService } from './app-config.service';
-import { Subject, filter } from 'rxjs';
+import { Observable, Subject, filter, of } from 'rxjs';
 import { Collection } from '../model/data/collection';
 import { Country } from '../model/data/country';
 import { RelatedCountry } from '../model/data/relatedCountry';
+import { Filter } from '../model/data/filter';
 
 export interface EneRecord {
   properties: any;
@@ -45,9 +46,11 @@ export class ResultService {
 
 
 
-  records: EneRecord[]= [];
+  records: EneRecord[] = [];
   properties: any;
   propertyList: any;
+
+  selectedFilterValuesId: number[] = [];
 
   totalResultCount: number = 0;
 
@@ -57,7 +60,7 @@ export class ResultService {
     private appConfigService: AppConfigService,
     private endecapodService: EndecapodService,
     private urlSerializer: EdcaUrlSerializer
-  ) { 
+  ) {
     this.appConfigData = new AppConfigData(this.appConfigService.config);
 
     this.endecapodService.setURL(this.appConfigData.getEndecapodURL(), this.appConfigData.getAwareURL());
@@ -86,9 +89,13 @@ export class ResultService {
 
   setCollection(selectedCollection: Collection) {
     this.setCurrentCollection(selectedCollection);
-    this.previousCollection?.id && this.endecapodService.PopN(this.previousCollection.id);
-    this.endecapodService.AddN(selectedCollection.id);
-    this.previousCollection = selectedCollection;
+    this.selectedFilterValuesId = [0];
+    this.selectedFilterValuesId.push(this.currentCollection.id);
+    this.endecapodService.SetN(this.selectedFilterValuesId);
+
+    // this.previousCollection?.id && this.endecapodService.PopN(this.previousCollection.id);
+    // this.endecapodService.AddN(selectedCollection.id);
+    // this.previousCollection = selectedCollection;
     this.fetchResult();
   }
 
@@ -125,9 +132,13 @@ export class ResultService {
     return this.currentCollection;
   }
 
+  getSelectedCollectionId(): Observable<number> {
+    return of(this.currentCollection.id);
+  }
+
   getSelectedCountry(): Country {
     return this.currentCountry;
-  }e 
+  }
 
   getSelectedRelatedCountry(): RelatedCountry {
     return this.currentRelatedCountry;
@@ -146,17 +157,53 @@ export class ResultService {
   }
 
   removeCollection() {
-    this.previousCollection?.id && this.endecapodService.PopN(this.previousCollection.id);
+    // this.previousCollection?.id && this.endecapodService.PopN(this.previousCollection.id);
+
+    this.endecapodService.SetN([0]);
+    this.endecapodService.Paginate(0);
     this.fetchResult();
   }
 
   removeCountry() {
     this.previousCountry?.id && this.endecapodService.PopN(this.previousCountry.id);
+    this.endecapodService.Paginate(0);
     this.fetchResult();
   }
 
   removeRelatedCountry() {
     this.previousRelatedCountry?.id && this.endecapodService.PopN(this.previousRelatedCountry.id);
+    this.endecapodService.Paginate(0);
+    this.fetchResult();
+  }
+
+
+
+  addFilter(filterItems: Filter[]) {
+    this.selectedFilterValuesId = [0];
+    if (this.currentCollection) {
+      this.selectedFilterValuesId.push(this.currentCollection.id);
+    }
+    filterItems.forEach(filterItem => {
+      if (filterItem.selectedValue) {
+        this.selectedFilterValuesId.push(filterItem.selectedValue.id);
+      }
+    });
+    this.endecapodService.SetN(this.selectedFilterValuesId);
+    this.fetchResult();
+  }
+
+
+  removeFilter(filterItems: Filter[]) {
+    this.selectedFilterValuesId = [0];
+    if (this.currentCollection) {
+      this.selectedFilterValuesId.push(this.currentCollection.id);
+    }
+    filterItems.forEach(filterItem => {
+      if (filterItem.selectedValue) {
+        this.selectedFilterValuesId.push(filterItem.selectedValue.id);
+      }
+    });
+    this.endecapodService.SetN(this.selectedFilterValuesId);
     this.fetchResult();
   }
 

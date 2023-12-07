@@ -11,12 +11,12 @@ export interface Sortings {
 
 export class AppConfigData {
     private readonly configMap = {};
-    
+
     constructor(data: any) {
         Object.keys(data).forEach(key => (this.configMap[key] = data[key]));
     }
 
-    
+
     public sortCollection(a: Dimension, b: Dimension): number {
         const collections = this.getCollections();
         const aN = collections.findIndex(c => c['N'] === a.id);
@@ -44,7 +44,7 @@ export class AppConfigData {
 
     getDWayURL(): string {
         return this.configMap['d-way_url'];
-    }    
+    }
 
 
     getEndecapodURL(): string {
@@ -61,23 +61,54 @@ export class AppConfigData {
 
     getCollectionAlias(collectionId: number): string {
         const collection = this.getCollections()
-          .find(col => col['N'] === collectionId);
+            .find(col => col['N'] === collectionId);
         return collection && collection['alias'] ? collection['alias'] : undefined;
     }
 
     getConfiguredSortings(): Sortings[] {
         return this.configMap['sortings'];
-      }
+    }
 
     getCollectionConfiguredSortOptions(collectionId: number): SelectItem[] {
-    const collection = this.getCollections()
-        .find(col => col['N'] === collectionId);
-    return collection && collection['sorting'] ? collection['sorting'] : this.getDefaultCollectionConfiguredSortOptions();
+        const collection = this.getCollections()
+            .find(col => col['N'] === collectionId);
+        return collection && collection['sorting'] ? collection['sorting'] : this.getDefaultCollectionConfiguredSortOptions();
     }
 
     private getDefaultCollectionConfiguredSortOptions(): SelectItem {
         return this.getCollections()
-          .find(col => col['N'] === 0)['sorting'];
-      }
+            .find(col => col['N'] === 0)['sorting'];
+    }
+
+
+    getCollectionFilters(collectionId: number): Object[] {
+        const collection = this.getCollections()
+            .find(col => col['N'] === collectionId);
+        return collection && collection['filters'] ? collection['filters'] : this.getDefaultCollectionFilters();
+    }
+
+    private getDefaultCollectionFilters(): Object[] {
+        return this.getCollections()
+            .find(col => col['N'] === 0)['filters'];
+    }
+
+
+    getDimensionAlias(dimensionId: number, collectionId: number): string {
+        const dim = this.getCollections()
+            .find(col => col['N'] === collectionId)['dimensions'];
+        const a = dim && dim.find(f => (f['id'] === dimensionId));
+        return a ? a['alias'] : this.getDefaultDimensionAlias(dimensionId);
+    }
+
+
+    getDefaultDimensionAlias(dimensionId: number): string {
+        const dim = this.getCollections()
+            .find(col => col['N'] === 0)['dimensions'];
+        const a = dim && dim.find(f => (f['id'] === dimensionId));
+        return a ? a['alias'] : undefined;
+    }
+
+
+
 
 }

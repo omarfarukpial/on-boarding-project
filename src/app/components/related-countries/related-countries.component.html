@@ -1,12 +1,16 @@
 <div class="d-flex flex-column">
-    <label>Related Country</label>
-    <p-dropdown 
-    [style]="{'width': '250px'}" 
-    [options]="relatedCountry" 
-    [(ngModel)]="selectedRelatedCountry" 
-    optionLabel="name" 
+  <label>Related Country</label>
+  <p-dropdown
+    [style]="{ width: '250px' }"
+    [options]="relatedCountry"
+    [(ngModel)]="selectedRelatedCountry"
+    optionLabel="name"
     [showClear]="true"
-    (onChange)="onRelatedCountryChange($event)"
+    [filter]="true"
+    resetFilterOnHide="true"
+    (onShow)="onRelatedCountryDropdownShow()"
+    (onHide)="onRelatedCountryChange()"
+    (onClear)="onClearClick()"
     placeholder="Select a Related Country"
-    ></p-dropdown>
+  ></p-dropdown>
 </div>

@@ -6,7 +6,10 @@
     [(ngModel)]="selectedCountry" 
     optionLabel="name" 
     [showClear]="true"
-    (onChange)="onCountryChange($event)" 
+    [filter]="true"
+    resetFilterOnHide="true"
+    (onHide)="onCountryChange()" 
+    (onClear)="onClearClick()"
     placeholder="Select a Country"
     ></p-dropdown>
 </div>

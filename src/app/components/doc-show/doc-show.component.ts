@@ -10,25 +10,26 @@ import { Location } from '@angular/common';
 })
 export class DocShowComponent implements OnInit {
 
-  documentData:any;
-  documentHtml:any;
+  documentData: any;
+  documentHtml: any;
   documentTitle: string;
 
   constructor(
     private dWayService: DWayService,
     private location: Location
-  ) { 
+  ) {
   }
 
   ngOnInit(): void {
     this.dWayService.LoadDocument()
-    .subscribe(
-      (response) => {
-        this.documentData = JSON.parse(response.body);
-        this.documentHtml = this.documentData.body;
-        this.documentTitle = this.documentData.title;
-      }
-    );
+      .subscribe(
+        (response) => {
+          this.documentData = JSON.parse(response.body);
+          console.log("🚀 ~ file: doc-show.component.ts:28 ~ DocShowComponent ~ ngOnInit ~ this.documentData:", this.documentData)
+          this.documentHtml = this.documentData.body;
+          this.documentTitle = this.documentData.title;
+        }
+      );
   }
 
   goBack() {

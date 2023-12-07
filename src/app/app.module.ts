@@ -23,6 +23,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { RouterReuseStrategy } from './utils/router-reuse-strategy';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DocPreviewComponent } from './components/doc-preview/doc-preview.component';
+import { DocPrintComponent } from './components/doc-print/doc-print.component';
 
 
 const appConfigFactory = (appConfigService: AppConfigService) => {
@@ -41,6 +42,7 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     DocShowComponent,
     HomeComponent,
     DocPreviewComponent,
+    DocPrintComponent,
   ],
   imports: [
     BrowserModule,

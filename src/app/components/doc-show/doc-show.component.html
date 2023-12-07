@@ -1,7 +1,21 @@
 <div class="contaier m-3">
-    <a href="#" (click)="goBack()">Doc</a>&nbsp;&gt;&nbsp;
-    <span>{{documentTitle}}</span>
+  <a href="#" (click)="goBack()">Doc</a>&nbsp;&gt;&nbsp;
+  <span>{{ documentTitle }}</span>
 </div>
-<div class="contaier m-5 p-5 border rounded">
+<div class="contaier d-flex justify-content-between gap-5 m-5">
+  <div class="col-2 d-flex flex-column align-items-center p-3 border rounded">
+    <div class="d-flex gap-2">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <a class="btn btn-outline-dark" routerLink="" routerLinkActive="active"
+          >Topic</a
+        >
+        <a class="btn btn-outline-dark" routerLink="">Outline</a>
+      </div>
+    </div>
+  </div>
+  <div
+    class="contaier col-9 d-flex justify-content-center p-5 border border-dark rounded"
+  >
     <div [innerHTML]="documentHtml"></div>
+  </div>
 </div>

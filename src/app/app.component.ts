@@ -9,7 +9,7 @@ import { EdcaUrlSerializer, EndecapodService } from '@ibfd/endecapod';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'mini-endeca';
+  title = 'on-boarding-project';
 
   private appConfigData: AppConfigData;
 

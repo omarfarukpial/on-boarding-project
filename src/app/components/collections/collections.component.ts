@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Dimension, EndecapodService, SearchResult } from '@ibfd/endecapod';
 import { map, take } from 'rxjs';
 import { AppConfigData } from 'src/app/model/config/app-config-data';
@@ -27,23 +27,30 @@ export class CollectionsComponent implements OnInit {
   collection: Object;
   selectedCollection: Collection;
 
+  @Output()
+  selectedCollectionEmmited: EventEmitter<Collection> = new EventEmitter();
+
   constructor(
     private appConfigService: AppConfigService,
     private endecapodService: EndecapodService,
     private exposeService: ExposeService,
     private resultService: ResultService
-    ) {
-      this.appConfigData = new AppConfigData(this.appConfigService.config);
-     }
+  ) {
+    this.appConfigData = new AppConfigData(this.appConfigService.config);
+  }
 
   ngOnInit(): void {
+
     this.collectionDimension = this.appConfigData.getCollectionDimension();
     this.configureCollectionExposeService();
     this.exposeService.Query()
-    .pipe(map(res => new SearchResult(res)),take(1))
-    .subscribe(res => {
-      this.collection = res.getDimension(this.collectionDimension.id)?.values;
+      .pipe(map(res => new SearchResult(res)), take(1))
+      .subscribe(res => {
+        this.collection = res.getDimension(this.collectionDimension.id)?.values;
       });
+
+    this.selectedCollectionEmmited.emit({ id: 0, name: '' });
+
   }
 
   configureCollectionExposeService() {
@@ -54,12 +61,16 @@ export class CollectionsComponent implements OnInit {
   }
 
 
-  onCollectionChange(event: Event) {
-    if (this.selectedCollection === null) {
-      this.resultService.removeCollection();
-    } else {
+  onCollectionChange() {
+    if (this.selectedCollection) {
+      this.selectedCollectionEmmited.emit(this.selectedCollection);
       this.resultService.setCollection(this.selectedCollection);
     }
+  }
+
+  onClearClick() {
+    this.selectedCollectionEmmited.emit({ id: 0, name: '' });
+    this.resultService.removeCollection();
   }
 
 }

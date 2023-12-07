@@ -5,6 +5,10 @@
     [(ngModel)]="selectedCollection" 
     optionLabel="name" 
     [showClear]="true"
+    [filter]="true"
+    resetFilterOnHide="true"
+    (onHide)="onCollectionChange()"
+    (onClear)="onClearClick()"
     placeholder="Select a Component"
-    (onChange)="onCollectionChange($event)"></p-dropdown>
+    ></p-dropdown>
 </div>

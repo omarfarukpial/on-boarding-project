@@ -1,7 +1,23 @@
-<div class="border border-solid rounded p-5">
-  <div class="d-flex flex-column gap-5">
-    <app-collections></app-collections>
-    <app-countries></app-countries>
-    <app-related-countries></app-related-countries>
+<div class="d-flex flex-column align-items-center gap-3">
+  <h3>Filters</h3>
+  <app-collections
+    (selectedCollectionEmmited)="showEmmit($event)"
+    class="my-2"
+  ></app-collections>
+  <div *ngFor="let filterItem of filterItems" class="d-flex flex-column">
+    <label>{{ filterItem.name }}</label>
+    <p-dropdown
+      [options]="filterItem.values"
+      optionLabel="name"
+      [style]="{ width: '250px' }"
+      [(ngModel)]="filterItem.selectedValue"
+      [showClear]="true"
+      [filter]="true"
+      resetFilterOnHide="true"
+      (onShow)="onFilterShow([filterItem.id])"
+      (onHide)="filterSubmit()"
+      (onClear)="onClearClick()"
+      placeholder="Select a Component"
+    ></p-dropdown>
   </div>
 </div>

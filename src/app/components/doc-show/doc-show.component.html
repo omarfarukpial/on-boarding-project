@@ -3,13 +3,14 @@
   <span>{{ documentTitle }}</span>
 </div>
 <div class="contaier d-flex justify-content-between gap-5 m-5">
-  <div class="col-2 d-flex flex-column align-items-center p-3 border rounded">
-    <div class="d-flex gap-2">
+  <div class="col-2 d-flex flex-column align-items-center">
+    <div class="d-flex flex-column gap-2 border rounded p-3">
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <a class="btn btn-outline-dark" routerLink="" routerLinkActive="active"
-          >Topic</a
-        >
-        <a class="btn btn-outline-dark" routerLink="">Outline</a>
+        <button class="btn btn-dark" [disabled]="true">Topic</button>
+        <button class="btn btn-dark" [disabled]="false">Outline</button>
+      </div>
+      <div>
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

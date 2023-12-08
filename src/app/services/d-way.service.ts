@@ -15,26 +15,32 @@ export class DWayService {
   constructor(
     private appConfigServer: AppConfigService,
     private http: HttpClient,
-    ) {
-      this.appConfigData = new AppConfigData(this.appConfigServer.config);
-      this.baseURL = this.appConfigData.getDWayURL();
-      this.docURL = localStorage.getItem('docURL') || '';
-     }
+  ) {
+    this.appConfigData = new AppConfigData(this.appConfigServer.config);
+    this.baseURL = this.appConfigData.getDWayURL();
+    this.docURL = localStorage.getItem('docURL') || '';
+  }
 
 
 
-     public LoadDocument(): Observable<HttpResponse<string>> {
-      const u = this.dwayURL(this.docURL);
-      console.log('LoadDocument: ' + u);
-      return this.http.get(u, { withCredentials: true, observe: 'response', responseType: 'text' });
-    }
-  
-    private dwayURL(docPath: string): string {
-      return this.baseURL.concat(docPath);
-    }
+  public LoadDocument(): Observable<HttpResponse<string>> {
+    const u = this.dwayURL(this.docURL);
+    console.log('LoadDocument: ' + u);
+    return this.http.get(u, { withCredentials: true, observe: 'response', responseType: 'text' });
+  }
 
-    setDocURL(docURL: string) {
-      this.docURL = docURL;
-      localStorage.setItem('docURL', docURL);
-    }
+  public LoadDocumentByUrl(docUrl: string): Observable<HttpResponse<string>> {
+    const u = this.dwayURL(docUrl);
+    console.log('LoadDocument: ' + u);
+    return this.http.get(u, { withCredentials: true, observe: 'response', responseType: 'text' });
+  }
+
+  private dwayURL(docPath: string): string {
+    return this.baseURL.concat(docPath);
+  }
+
+  setDocURL(docURL: string) {
+    this.docURL = docURL;
+    localStorage.setItem('docURL', docURL);
+  }
 }

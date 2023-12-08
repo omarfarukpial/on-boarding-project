@@ -1,57 +1,73 @@
-<div>
-  <div *ngIf="loading" class="d-flex justify-content-center align-items-center">
-    <p-progressSpinner></p-progressSpinner>
-  </div>
-  <div class="text-center" *ngIf="!results.length && !loading">
-    <h2>Sorry! No result found!</h2>
-  </div>
-  <div class="d-flex flex-column gap-4" *ngIf="!loading && results.length > 0">
-    <div class="d-flex justify-content-end gap-2">
-      <button
-        class="btn btn-dark"
-        [disabled]="selectedCheckboxes.length !== 1"
-        (click)="onPdfBtnClick()"
-      >
-        PDF
-      </button>
-      <button
-        class="btn btn-dark"
-        [disabled]="selectedCheckboxes.length !== 1"
-        (click)="onViewBtnClick()"
-      >
-        VIEW
-      </button>
+<div class="d-flex">
+  <div class="col-6">
+    <div
+      *ngIf="loading"
+      class="d-flex justify-content-center align-items-center"
+    >
+      <p-progressSpinner></p-progressSpinner>
     </div>
-    <div class="card" *ngFor="let result of results">
-      <div class="card-body">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value="{{ result.relative_path }}"
-            id="{{ result.global_title }}"
-            [(ngModel)]="result.checked"
-            (change)="onCheckboxChange(result)"
-          />
-          <b style="text-decoration: none">
-            <a
-              [href]="'#/doc?url=' + result.relative_path"
-              (click)="onShowDoc(result.relative_path)"
-              >{{ result.global_title }}</a
-            >
-          </b>
-          <p class="card-text">Collection: {{ result.frontend_collection }}</p>
-          <p class="card-text">Country: {{ result.sort_country_one }}</p>
+    <div class="text-center" *ngIf="!results.length && !loading">
+      <h2>Sorry! No result found!</h2>
+    </div>
+    <div
+      class="d-flex flex-column gap-4"
+      *ngIf="!loading && results.length > 0"
+    >
+      <div class="d-flex justify-content-end gap-2">
+        <button
+          class="btn btn-dark"
+          [disabled]="selectedCheckboxes.length !== 1"
+          (click)="onPdfBtnClick()"
+        >
+          PDF
+        </button>
+        <button
+          class="btn btn-dark"
+          [disabled]="selectedCheckboxes.length !== 1"
+          (click)="onViewBtnClick()"
+        >
+          VIEW
+        </button>
+      </div>
+      <div class="card" *ngFor="let result of results">
+        <div class="card-body">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="{{ result.relative_path }}"
+              id="{{ result.global_title }}"
+              [(ngModel)]="result.checked"
+              (change)="onCheckboxChange(result)"
+            />
+            <b>
+              <span
+                class="text-primary"
+                style="cursor: pointer"
+                (click)="onShowDoc(result.relative_path)"
+              >
+                {{ result.global_title }}
+              </span>
+            </b>
+            <p class="card-text">
+              Collection: {{ result.frontend_collection }}
+            </p>
+            <p class="card-text">Country: {{ result.sort_country_one }}</p>
+          </div>
         </div>
       </div>
+      <div class="card flex justify-content-center">
+        <p-paginator
+          (onPageChange)="onPageChange($event)"
+          [first]="first"
+          [rows]="rows"
+          [totalRecords]="totalResultCount"
+        ></p-paginator>
+      </div>
     </div>
-    <div class="card flex justify-content-center">
-      <p-paginator
-        (onPageChange)="onPageChange($event)"
-        [first]="first"
-        [rows]="rows"
-        [totalRecords]="totalResultCount"
-      ></p-paginator>
-    </div>
+  </div>
+
+  <div class="col-6">
+    <app-doc-preview [docUrl]="selectedDocPath"></app-doc-preview>
   </div>
 </div>

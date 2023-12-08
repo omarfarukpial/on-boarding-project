@@ -6,13 +6,18 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-doc-show',
   templateUrl: './doc-show.component.html',
-  styleUrls: ['./doc-show.component.css']
+  styleUrls: ['./doc-show.component.css'],
+  providers: [DWayService]
 })
 export class DocShowComponent implements OnInit {
 
   documentData: any;
   documentHtml: any;
   documentTitle: string;
+
+
+  showTopicDiv: boolean = true;
+  showOutlineDiv: boolean = false;
 
   constructor(
     private dWayService: DWayService,
@@ -31,6 +36,19 @@ export class DocShowComponent implements OnInit {
         }
       );
   }
+
+
+  showTopic() {
+    this.showTopicDiv = true;
+    this.showOutlineDiv = false;
+  }
+
+  showOutline() {
+    this.showTopicDiv = false;
+    this.showOutlineDiv = true;
+  }
+
+
 
   goBack() {
     this.location.back();

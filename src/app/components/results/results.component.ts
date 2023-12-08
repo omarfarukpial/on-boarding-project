@@ -27,6 +27,8 @@ export class ResultsComponent implements OnInit {
 
   selectedCheckboxes: string[] = [];
 
+  selectedDocPath: string = '';
+
   constructor(
     private resultService: ResultService,
     private dWayService: DWayService,
@@ -46,8 +48,12 @@ export class ResultsComponent implements OnInit {
     });
   }
 
+  // onShowDoc(docPath: string) {
+  //   this.dWayService.setDocURL(docPath);
+  // }
+
   onShowDoc(docPath: string) {
-    this.dWayService.setDocURL(docPath);
+    this.selectedDocPath = docPath;
   }
 
   onCheckboxChange(result: any) {

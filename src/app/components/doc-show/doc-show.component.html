@@ -3,14 +3,84 @@
   <span>{{ documentTitle }}</span>
 </div>
 <div class="contaier d-flex justify-content-between gap-5 m-5">
-  <div class="col-2 d-flex flex-column align-items-center">
-    <div class="d-flex flex-column gap-2 border rounded p-3">
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <button class="btn btn-dark" [disabled]="true">Topic</button>
-        <button class="btn btn-dark" [disabled]="false">Outline</button>
+  <div class="col-3 d-flex flex-column align-items-center">
+    <div class="d-flex flex-column w-100 gap-1 border rounded p-3">
+      <div class="btn-group btn-group-toggle">
+        <!-- <a
+          class="btn btn-outline-dark"
+          routerLink="doc-topic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Topic
+        </a>
+        <a
+          class="btn btn-outline-dark"
+          routerLink="doc-outline"
+          routerLinkActive="active"
+        >
+          Outline
+        </a> -->
+
+        <button
+          class="btn"
+          [class.btn-dark]="showTopicDiv"
+          [class.btn-outline-dark]="!showTopicDiv"
+          (click)="showTopic()"
+        >
+          Topic
+        </button>
+        <button
+          class="btn"
+          [class.btn-dark]="showOutlineDiv"
+          [class.btn-outline-dark]="!showOutlineDiv"
+          (click)="showOutline()"
+        >
+          Outline
+        </button>
       </div>
       <div>
-        <router-outlet></router-outlet>
+        <!-- <router-outlet></router-outlet> -->
+        <!-- <app-doc-topic *ngIf="showTopicDiv"></app-doc-topic>
+        <app-doc-outline *ngIf="showOutlineDiv"></app-doc-outline> -->
+
+        <div *ngIf="showTopicDiv"></div>
+        <div *ngIf="showOutlineDiv" class="mt-3">
+          <ul style="list-style: none">
+            <ng-container *ngFor="let outline of documentData.outline.nodes">
+              <li>
+                <a [href]="outline.href" [innerHTML]="outline.title"></a>
+                <ng-container *ngIf="outline.nodes && outline.nodes.length > 0">
+                  <ng-container
+                    *ngTemplateOutlet="
+                      recursiveOutlineTemplate;
+                      context: { $implicit: outline.nodes }
+                    "
+                  ></ng-container>
+                </ng-container>
+              </li>
+            </ng-container>
+          </ul>
+          <ng-template #recursiveOutlineTemplate let-nodes>
+            <ul style="list-style: none">
+              <ng-container *ngFor="let node of nodes">
+                <li>
+                  <a [href]="node.href" [innerHTML]="node.title"></a>
+                  <ng-container *ngIf="node.nodes && node.nodes.length > 0">
+                    <ng-container
+                      *ngTemplateOutlet="
+                        recursiveOutlineTemplate;
+                        context: {
+                          $implicit: node.nodes
+                        }
+                      "
+                    ></ng-container>
+                  </ng-container>
+                </li>
+              </ng-container>
+            </ul>
+          </ng-template>
+        </div>
       </div>
     </div>
   </div>

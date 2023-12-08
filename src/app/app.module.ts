@@ -24,6 +24,8 @@ import { RouterReuseStrategy } from './utils/router-reuse-strategy';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DocPreviewComponent } from './components/doc-preview/doc-preview.component';
 import { DocPrintComponent } from './components/doc-print/doc-print.component';
+import { DocOutlineComponent } from './components/doc-outline/doc-outline.component';
+import { DocTopicComponent } from './components/doc-topic/doc-topic.component';
 
 
 const appConfigFactory = (appConfigService: AppConfigService) => {
@@ -43,6 +45,8 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     HomeComponent,
     DocPreviewComponent,
     DocPrintComponent,
+    DocOutlineComponent,
+    DocTopicComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,7 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     FormsModule,
     BsDropdownModule,
     PaginatorModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
   ],
   providers: [
     {
@@ -62,11 +66,11 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
       useFactory: appConfigFactory,
       multi: true,
       deps: [AppConfigService]
-    }, 
+    },
     {
       provide: RouteReuseStrategy, useClass: RouterReuseStrategy
     }
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

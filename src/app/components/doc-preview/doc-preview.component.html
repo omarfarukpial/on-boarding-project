@@ -38,6 +38,9 @@
     </div>
   </div>
   <div>
+    <div *ngIf="showDocumentPreviewDiv" class="container mt-3">
+      <div class="docPreviewSection" [innerHTML]="documentData.body"></div>
+    </div>
     <div *ngIf="showOutlinePreviewDiv" class="container mt-3">
       <ul style="list-style: none">
         <ng-container *ngFor="let outline of documentData.outline.nodes">

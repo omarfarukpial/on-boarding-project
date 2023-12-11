@@ -56,13 +56,57 @@
           </div>
         </div>
       </div>
-      <div class="card flex justify-content-center">
-        <p-paginator
+
+      <div class="card" *ngFor="let result of moreResults">
+        <div class="card-body">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="{{ result.relative_path }}"
+              id="{{ result.global_title }}"
+              [(ngModel)]="result.checked"
+              (change)="onCheckboxChange(result)"
+            />
+            <b>
+              <span
+                class="text-primary"
+                style="cursor: pointer"
+                (click)="onShowDoc(result.relative_path)"
+              >
+                {{ result.global_title }}
+              </span>
+            </b>
+            <p class="card-text">
+              Collection: {{ result.frontend_collection }}
+            </p>
+            <p class="card-text">Country: {{ result.sort_country_one }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center m-5">
+        <!-- <p-paginator
           (onPageChange)="onPageChange($event)"
           [first]="first"
           [rows]="rows"
           [totalRecords]="totalResultCount"
-        ></p-paginator>
+        ></p-paginator> -->
+
+        <button
+          *ngIf="!loadOnScroll && !showLoadingOnScroll"
+          class="btn btn-info py-2 px-5 rounded-pill"
+          (click)="onLoadMore()"
+        >
+          Load More
+        </button>
+
+        <button
+          *ngIf="showLoadingOnScroll"
+          class="btn btn-warning py-2 px-5 rounded-pill"
+        >
+          Loading...
+        </button>
       </div>
     </div>
   </div>

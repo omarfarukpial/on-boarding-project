@@ -109,6 +109,11 @@ export class AppConfigData {
     }
 
 
+    getLoadOnScroll(): boolean {
+        return this.configMap['load_on_scroll'];
+    }
+
+
 
 
 }

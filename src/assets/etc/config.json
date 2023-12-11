@@ -24,6 +24,7 @@
   "CSA_url": "https://dev-www.ibfd.org/customer-support",
   "adobe-pdf-embed-clientId": "167aedfe426749ebac0df79ab7ee78a5",
   "smart_panel_suppress_limit": 3,
+  "load_on_scroll": false,
   "backend_collection_dimension": {
     "id": 3314,
     "name": "Collection"

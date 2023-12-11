@@ -1,0 +1,46 @@
+{
+  "name": "@ibfd/topicsearch",
+  "version": "0.0.20-SNAPSHOT",
+  "license": "SEE LICENSE IN LICENSE.TXT",
+  "description": "npm package / Angular module providing IBFD Topic Search",
+  "private": false,
+  "repository": {},
+  "peerDependencies": {
+    "@angular/animations": "~13.4.0",
+    "@angular/common": "~13.4.0",
+    "@angular/compiler": "~13.4.0",
+    "@angular/core": "~13.4.0",
+    "@angular/forms": "~13.4.0",
+    "@angular/platform-browser": "~13.4.0",
+    "@angular/platform-browser-dynamic": "~13.4.0",
+    "@angular/router": "~13.4.0",
+    "@ibfd/endecapod": "0.0.28-SNAPSHOT",
+    "lodash-es": "^4.17.21",
+    "ngx-bootstrap": "^8.0.0",
+    "primeng": "13.4.1",
+    "zone.js": "~0.11.8"
+  },
+  "module": "fesm2015/ibfd-topicsearch.mjs",
+  "es2020": "fesm2020/ibfd-topicsearch.mjs",
+  "esm2020": "esm2020/ibfd-topicsearch.mjs",
+  "fesm2020": "fesm2020/ibfd-topicsearch.mjs",
+  "fesm2015": "fesm2015/ibfd-topicsearch.mjs",
+  "typings": "ibfd-topicsearch.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./ibfd-topicsearch.d.ts",
+      "esm2020": "./esm2020/ibfd-topicsearch.mjs",
+      "es2020": "./fesm2020/ibfd-topicsearch.mjs",
+      "es2015": "./fesm2015/ibfd-topicsearch.mjs",
+      "node": "./fesm2015/ibfd-topicsearch.mjs",
+      "default": "./fesm2020/ibfd-topicsearch.mjs"
+    }
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

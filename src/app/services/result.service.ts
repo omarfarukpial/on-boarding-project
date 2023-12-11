@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { EdcaUrlSerializer, EndecapodService, SearchResult } from '@ibfd/endecapod';
 import { AppConfigData } from '../model/config/app-config-data';
 import { AppConfigService } from './app-config.service';
-import { Observable, Subject, filter, of } from 'rxjs';
+import { Observable, Subject, filter, of, take } from 'rxjs';
 import { Collection } from '../model/data/collection';
 import { Country } from '../model/data/country';
 import { RelatedCountry } from '../model/data/relatedCountry';
@@ -22,6 +22,7 @@ export interface EneRecord {
 export class ResultService {
 
   result: any | SearchResult;
+  moreResult: any | SearchResult;
 
   private currentCollection: Collection;
   private previousCollection: Collection;
@@ -35,6 +36,10 @@ export class ResultService {
 
   private dataSubject = new Subject<any>();
   data$ = this.dataSubject.asObservable();
+
+
+  private moreDataSubject = new Subject<any>();
+  moreData$ = this.moreDataSubject.asObservable();
 
 
   private loadingSubject = new Subject<boolean>();
@@ -74,16 +79,31 @@ export class ResultService {
   fetchResult(): void {
     this.setLoading(true);
     this.endecapodService.DoSearch();
+    this.endecapodService.Paginate(0);
     this.endecapodService.Result()
-      .pipe(filter(val => val instanceof SearchResult))
+      .pipe(filter(val => val instanceof SearchResult), take(1))
       .subscribe((res: SearchResult) => {
         this.result = res;
         this.setTotalResultCount(this.result.result.results.numAggrBins);
         this.records = this.result.getRecords();
         this.properties = this.records.map(item => item.records.map(record => record.properties));
         this.propertyList = this.properties.flat();
+        console.log("🚀 ~ file: result.service.ts:85 ~ ResultService ~ .subscribe ~  this.propertyList:", this.propertyList)
         this.dataSubject.next(this.propertyList);
         this.setLoading(false);
+      });
+  }
+
+  fetchMoreResult(): void {
+    this.endecapodService.DoSearch();
+    this.endecapodService.Result()
+      .pipe(filter(val => val instanceof SearchResult), take(1))
+      .subscribe((res: SearchResult) => {
+        this.moreResult = res;
+        this.records = this.moreResult.getRecords();
+        this.properties = this.records.map(item => item.records.map(record => record.properties));
+        this.propertyList = this.properties.flat();
+        this.moreDataSubject.next(this.propertyList);
       });
   }
 
@@ -117,7 +137,7 @@ export class ResultService {
 
   setOffset(startingNumber: number) {
     this.endecapodService.Paginate(startingNumber);
-    this.fetchResult();
+    this.fetchMoreResult();
   }
 
   setTotalResultCount(totalResult: number) {

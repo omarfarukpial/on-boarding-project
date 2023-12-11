@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~13.4.0",
     "@angular/router": "~13.4.0",
     "@ibfd/endecapod": "0.0.28-SNAPSHOT",
+    "@ibfd/topicsearch": "file:./local_modules/topic/dist",
     "@ng-bootstrap/ng-bootstrap": "^12.1.2",
     "@popperjs/core": "^2.10.2",
     "bootstrap": "^5.1.3",

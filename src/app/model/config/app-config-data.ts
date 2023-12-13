@@ -1,5 +1,6 @@
 import { Dimension, SortCriterium } from "@ibfd/endecapod";
 import { SelectItem } from "primeng/api";
+import { TopicFeatureConfig } from "./topic-feature-config";
 
 export interface Sortings {
     name: string;
@@ -111,6 +112,16 @@ export class AppConfigData {
 
     getLoadOnScroll(): boolean {
         return this.configMap['load_on_scroll'];
+    }
+
+
+    getTopicFeatureConfig(): TopicFeatureConfig {
+        return new TopicFeatureConfig(this.configMap['topic']);
+    }
+
+
+    getSuppressedChips(): number[] {
+        return this.configMap['chips'] ? this.configMap['chips']['suppress'] : [];
     }
 
 

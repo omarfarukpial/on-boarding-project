@@ -185,7 +185,7 @@
   "endecapod": {
     "url": "/endecapod",
     "aware_url": "/endecapod/my",
-    "initial_query": "N=0&Ns=sort_date_common|1&Nr=AND(3,10)&Ne=7487&Nu=global_rollup_key&Np=1"
+    "initial_query": "N=0&Ns=sort_date_common|1&Nr=AND(3,10)&Ne=7487&Nu=global_rollup_key&Np=2"
   },
   "tour": [
     {

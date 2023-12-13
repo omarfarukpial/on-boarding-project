@@ -37,15 +37,24 @@
       </button>
     </div>
   </div>
-  <div>
-    <div *ngIf="showDocumentPreviewDiv" class="container mt-3">
+  <div class="mt-3 border rounded">
+    <div *ngIf="showDocumentPreviewDiv" class="container p-3 mt-3">
       <div class="docPreviewSection" [innerHTML]="documentData.body"></div>
     </div>
     <div *ngIf="showOutlinePreviewDiv" class="container mt-3">
       <ul style="list-style: none">
         <ng-container *ngFor="let outline of documentData.outline.nodes">
-          <li>
-            <a [href]="outline.href" [innerHTML]="outline.title"></a>
+          <li class="mt-3">
+            <a
+              (click)="onOutlineItemClick(outline.href)"
+              [innerHTML]="outline.title"
+              style="
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
+                font-size: medium;
+              "
+            ></a>
             <ng-container *ngIf="outline.nodes && outline.nodes.length > 0">
               <ng-container
                 *ngTemplateOutlet="
@@ -61,7 +70,16 @@
         <ul style="list-style: none">
           <ng-container *ngFor="let node of nodes">
             <li>
-              <a [href]="node.href" [innerHTML]="node.title"></a>
+              <a
+                (click)="onOutlineItemClick(node.href)"
+                [innerHTML]="node.title"
+                style="
+                  cursor: pointer;
+                  color: blue;
+                  text-decoration: underline;
+                  font-size: medium;
+                "
+              ></a>
               <ng-container *ngIf="node.nodes && node.nodes.length > 0">
                 <ng-container
                   *ngTemplateOutlet="

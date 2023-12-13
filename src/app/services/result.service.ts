@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EdcaUrlSerializer, EndecapodService, SearchResult } from '@ibfd/endecapod';
+import { EdcaUrlSerializer, EndecapodService, EneRecord, SearchResult } from '@ibfd/endecapod';
 import { AppConfigData } from '../model/config/app-config-data';
 import { AppConfigService } from './app-config.service';
 import { Observable, Subject, filter, of, take } from 'rxjs';
@@ -7,12 +7,6 @@ import { Collection } from '../model/data/collection';
 import { Country } from '../model/data/country';
 import { RelatedCountry } from '../model/data/relatedCountry';
 import { Filter } from '../model/data/filter';
-
-export interface EneRecord {
-  properties: any;
-  records: EneRecord[];
-  dimensionValues: any;
-}
 
 
 
@@ -26,6 +20,8 @@ export class ResultService {
 
   private currentCollection: Collection;
   private previousCollection: Collection;
+
+  private isFilterChanged: boolean = false;
 
   private currentCountry: Country;
   private previousCountry: Country;
@@ -51,7 +47,7 @@ export class ResultService {
 
 
 
-  records: EneRecord[] = [];
+  records: EneRecord[];
   properties: any;
   propertyList: any;
 
@@ -76,47 +72,53 @@ export class ResultService {
 
   }
 
+  // fetchResult(): void {
+  //   this.setLoading(true);
+  //   this.endecapodService.DoSearch();
+  //   this.endecapodService.Paginate(0);
+  //   this.endecapodService.Result()
+  //     .pipe(filter(val => val instanceof SearchResult), take(1))
+  //     .subscribe((res: SearchResult) => {
+  //       this.result = res;
+  //       this.setTotalResultCount(this.result.result.results.numAggrBins);
+  //       this.records = this.result.getRecords();
+  //       this.properties = this.records.map(item => item.records.map(record => record.properties));
+  //       this.propertyList = this.properties.flat();
+  //       this.dataSubject.next(this.propertyList);
+  //       this.setLoading(false);
+  //     });
+  // }
+
+
+
   fetchResult(): void {
     this.setLoading(true);
-    this.endecapodService.DoSearch();
     this.endecapodService.Paginate(0);
-    this.endecapodService.Result()
-      .pipe(filter(val => val instanceof SearchResult), take(1))
-      .subscribe((res: SearchResult) => {
-        this.result = res;
-        this.setTotalResultCount(this.result.result.results.numAggrBins);
-        this.records = this.result.getRecords();
-        this.properties = this.records.map(item => item.records.map(record => record.properties));
-        this.propertyList = this.properties.flat();
-        console.log("🚀 ~ file: result.service.ts:85 ~ ResultService ~ .subscribe ~  this.propertyList:", this.propertyList)
-        this.dataSubject.next(this.propertyList);
-        this.setLoading(false);
-      });
+    this.endecapodService.DoSearch();
+    // this.endecapodService.Result()
+    //   .pipe()
+    //   .subscribe((res) => {
+    //     if (res instanceof SearchResult) {
+    //       this.setTotalResultCount(res.getNumAggrRecs());
+    //       this.records = res.getRecords();
+    //       this.dataSubject.next(this.records);
+    //       this.setLoading(false);
+    //     }
+    //   });
   }
 
-  fetchMoreResult(): void {
-    this.endecapodService.DoSearch();
-    this.endecapodService.Result()
-      .pipe(filter(val => val instanceof SearchResult), take(1))
-      .subscribe((res: SearchResult) => {
-        this.moreResult = res;
-        this.records = this.moreResult.getRecords();
-        this.properties = this.records.map(item => item.records.map(record => record.properties));
-        this.propertyList = this.properties.flat();
-        this.moreDataSubject.next(this.propertyList);
-      });
-  }
 
   setCollection(selectedCollection: Collection) {
     this.setCurrentCollection(selectedCollection);
     this.selectedFilterValuesId = [0];
     this.selectedFilterValuesId.push(this.currentCollection.id);
     this.endecapodService.SetN(this.selectedFilterValuesId);
+    this.endecapodService.DoSearch();
 
     // this.previousCollection?.id && this.endecapodService.PopN(this.previousCollection.id);
     // this.endecapodService.AddN(selectedCollection.id);
     // this.previousCollection = selectedCollection;
-    this.fetchResult();
+    // this.fetchResult();
   }
 
   addCountry(selectedCountry: Country) {
@@ -136,8 +138,10 @@ export class ResultService {
   }
 
   setOffset(startingNumber: number) {
+    this.endecapodService.setName('paginationService');
     this.endecapodService.Paginate(startingNumber);
-    this.fetchMoreResult();
+    // this.fetchResult();
+    this.endecapodService.DoSearch();
   }
 
   setTotalResultCount(totalResult: number) {
@@ -181,6 +185,7 @@ export class ResultService {
 
     this.endecapodService.SetN([0]);
     this.endecapodService.Paginate(0);
+    this.setCurrentCollection({ id: 0, name: '' });
     this.fetchResult();
   }
 
@@ -199,6 +204,7 @@ export class ResultService {
 
 
   addFilter(filterItems: Filter[]) {
+    this.setIsFilterChanged(true);
     this.selectedFilterValuesId = [0];
     if (this.currentCollection) {
       this.selectedFilterValuesId.push(this.currentCollection.id);
@@ -214,6 +220,7 @@ export class ResultService {
 
 
   removeFilter(filterItems: Filter[]) {
+    this.setIsFilterChanged(true);
     this.selectedFilterValuesId = [0];
     if (this.currentCollection) {
       this.selectedFilterValuesId.push(this.currentCollection.id);
@@ -225,6 +232,14 @@ export class ResultService {
     });
     this.endecapodService.SetN(this.selectedFilterValuesId);
     this.fetchResult();
+  }
+
+  getIsFilterChanged(): boolean {
+    return this.isFilterChanged;
+  }
+
+  setIsFilterChanged(isFilterChanged: boolean) {
+    this.isFilterChanged = isFilterChanged;
   }
 
 }

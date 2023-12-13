@@ -11,16 +11,8 @@ import { DocOutlineComponent } from './components/doc-outline/doc-outline.compon
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { reuse: true } },
   { path: 'search', component: HomeComponent, data: { reuse: true } },
-  {
-    path: 'document', component: DocShowComponent, children: [
-      { path: '', component: DocTopicComponent },
-      { path: 'doc-topic', component: DocTopicComponent },
-      { path: 'doc-outline', component: DocOutlineComponent }
-    ]
-  },
+  { path: 'document', component: DocShowComponent },
   { path: 'print', component: DocPrintComponent },
-
-
 
 ];
 

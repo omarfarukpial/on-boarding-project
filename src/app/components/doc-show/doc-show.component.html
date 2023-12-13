@@ -44,12 +44,27 @@
         <!-- <app-doc-topic *ngIf="showTopicDiv"></app-doc-topic>
         <app-doc-outline *ngIf="showOutlineDiv"></app-doc-outline> -->
 
-        <div *ngIf="showTopicDiv"></div>
+        <div *ngIf="showTopicDiv">
+          <app-doc-topic
+            *ngFor="let topicConfig of topicConfigs"
+            [topicConfig]="topicConfig"
+            (docTopicTreeBuild)="onTopicTreeBuild($event)"
+          ></app-doc-topic>
+        </div>
         <div *ngIf="showOutlineDiv" class="mt-3">
           <ul style="list-style: none">
             <ng-container *ngFor="let outline of documentData.outline.nodes">
-              <li>
-                <a [href]="outline.href" [innerHTML]="outline.title"></a>
+              <li class="mt-3">
+                <a
+                  (click)="scrollToView(outline.href)"
+                  [innerHTML]="outline.title"
+                  style="
+                    cursor: pointer;
+                    color: blue;
+                    text-decoration: underline;
+                    font-size: medium;
+                  "
+                ></a>
                 <ng-container *ngIf="outline.nodes && outline.nodes.length > 0">
                   <ng-container
                     *ngTemplateOutlet="
@@ -65,7 +80,16 @@
             <ul style="list-style: none">
               <ng-container *ngFor="let node of nodes">
                 <li>
-                  <a [href]="node.href" [innerHTML]="node.title"></a>
+                  <a
+                    (click)="scrollToView(node.href)"
+                    [innerHTML]="node.title"
+                    style="
+                      cursor: pointer;
+                      color: blue;
+                      text-decoration: underline;
+                      font-size: small;
+                    "
+                  ></a>
                   <ng-container *ngIf="node.nodes && node.nodes.length > 0">
                     <ng-container
                       *ngTemplateOutlet="
@@ -85,8 +109,9 @@
     </div>
   </div>
   <div
+    *ngIf="documentHtml"
     class="contaier col-9 d-flex justify-content-center p-5 border border-dark rounded"
   >
-    <div [innerHTML]="documentHtml"></div>
+    <div [innerHTML]="sanitize(documentHtml)"></div>
   </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { Router } from '@angular/router';
 import { DWayService } from 'src/app/services/d-way.service';
 
 @Component({
@@ -12,6 +13,9 @@ export class DocPreviewComponent implements OnInit {
   @Input()
   docUrl: string;
 
+  @Input()
+  selectedDoc: any;
+
   documentData: any;
   previewShow: boolean = false;
 
@@ -22,6 +26,7 @@ export class DocPreviewComponent implements OnInit {
 
   constructor(
     private dWayService: DWayService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -36,11 +41,18 @@ export class DocPreviewComponent implements OnInit {
             this.documentData = JSON.parse(response.body);
             this.previewShow = true;
 
-            console.log("🚀 ~ file: doc-preview.component.ts:26 ~ DocPreviewComponent ~ ngOnInit ~ this.documentData:", this.documentData)
+            console.log("🚀 ~ file: doc-preview.component.ts:44 ~ DocPreviewComponent ~ ngOnChanges ~ this.selectedDoc:", this.selectedDoc)
 
           }
         );
     }
+  }
+
+  onOutlineItemClick(id: string) {
+    id = id.replace(/^#/, "");
+    // this.router.navigate(['document'], { queryParams: { url: this.docUrl }, fragment: id });
+    this.router.navigate(['document'], { queryParams: { url: this.docUrl } });
+
   }
 
 

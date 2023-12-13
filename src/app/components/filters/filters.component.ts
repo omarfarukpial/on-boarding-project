@@ -86,7 +86,7 @@ export class FiltersComponent implements OnInit {
       .pipe(map(res => new SearchResult(res)), take(1))
       .subscribe(res => {
         this.filterItems.forEach(filterItem => {
-          if (filterItem.id == filterItemid && !filterItem.load_on_init) {
+          if (filterItem.id == filterItemid) {
             filterItem.values = res.getDimension(filterItem.id)?.values;
           }
         });

@@ -45,6 +45,8 @@ export class ResultService {
     this.loadingSubject.next(loading);
   }
 
+  checkedRecord: any = [];
+
 
 
   records: EneRecord[];
@@ -240,6 +242,14 @@ export class ResultService {
 
   setIsFilterChanged(isFilterChanged: boolean) {
     this.isFilterChanged = isFilterChanged;
+  }
+
+
+  setCheckedRecord(checkedRecord: any) {
+    this.checkedRecord = checkedRecord;
+  }
+  getCheckedRecord(): any {
+    return this.checkedRecord;
   }
 
 }

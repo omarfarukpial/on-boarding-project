@@ -3,12 +3,13 @@ import { DWayService } from 'src/app/services/d-way.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { TopicConfig, TopicService, TopicServiceConfig } from 'local_modules/topic/dist';
+import { TopicConfig, TopicService, TopicServiceConfig } from '@ibfd/topicsearch';
 import { AppConfigService } from 'src/app/services/app-config.service';
 import { AppConfigData } from 'src/app/model/config/app-config-data';
 import { filter } from 'rxjs';
 import { TreeNode } from 'primeng/api';
-import { EndecapodService } from '@ibfd/endecapod';
+import { EndecapodService, EneRecord, SearchResult } from '@ibfd/endecapod';
+import { ResultService } from 'src/app/services/result.service';
 
 
 @Component({
@@ -38,6 +39,15 @@ export class DocShowComponent implements OnInit {
 
   docTopicTree: TreeNode[];
 
+  taxtopicRecords: EneRecord[];
+
+
+
+
+
+
+
+
 
 
 
@@ -48,6 +58,8 @@ export class DocShowComponent implements OnInit {
     private router: Router,
     private sanitizer: DomSanitizer,
     private appConfigService: AppConfigService,
+    private documentfindService: EndecapodService,
+    private resultService: ResultService
   ) {
     this.appConfigData = new AppConfigData(this.appConfigService.config);
     this.topicConfigs = this.appConfigData.getTopicFeatureConfig().getTopicNavigationConfig().getEnabledTaxonomies();
@@ -56,6 +68,8 @@ export class DocShowComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+
     this.route.queryParams.subscribe(params => {
       this.urlParameter = params['url'];
     });
@@ -63,7 +77,7 @@ export class DocShowComponent implements OnInit {
 
     this.dWayService.setDocURL(this.urlParameter);
 
-
+    this.taxtopicRecords = this.resultService.getCheckedRecord();
 
 
 
@@ -73,6 +87,7 @@ export class DocShowComponent implements OnInit {
       .subscribe(
         (response) => {
           this.documentData = JSON.parse(response.body);
+          console.log("🚀 ~ file: doc-show.component.ts:100 ~ DocShowComponent ~ ngOnInit ~ this.documentData:", this.documentData)
           this.documentHtml = this.documentData.body;
           this.documentTitle = this.documentData.title;
           this.scrollToFragment();
@@ -81,6 +96,20 @@ export class DocShowComponent implements OnInit {
 
 
     // this.loadDocTopicList();
+
+
+
+    // this.documentfindService.setName("documentfind");
+    // this.documentfindService.setURL(this.appConfigData.getEndecapodURL(), this.appConfigData.getAwareURL());
+
+    // this.documentfindService.Result()
+    //   .pipe(filter(res => !!res))
+    //   .subscribe((res: SearchResult) => {
+    //     console.log("🚀 ~ file: doc-show.component.ts:112 ~ DocShowComponent ~ .subscribe ~ res:", res)
+
+    //   });
+
+
 
 
 

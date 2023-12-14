@@ -1,1 +1,16 @@
-<h1>This is doc topic</h1>
+<ol>
+  <div *ngFor="let topic of topics">
+    <li
+      *ngIf="topic.selectable"
+      class="mt-1"
+      style="
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
+        font-size: medium;
+      "
+    >
+      {{ topic.label }}
+    </li>
+  </div>
+</ol>

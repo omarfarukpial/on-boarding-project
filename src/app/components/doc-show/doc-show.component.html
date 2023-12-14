@@ -48,7 +48,7 @@
           <app-doc-topic
             *ngFor="let topicConfig of topicConfigs"
             [topicConfig]="topicConfig"
-            (docTopicTreeBuild)="onTopicTreeBuild($event)"
+            [records]="taxtopicRecords"
           ></app-doc-topic>
         </div>
         <div *ngIf="showOutlineDiv" class="mt-3">

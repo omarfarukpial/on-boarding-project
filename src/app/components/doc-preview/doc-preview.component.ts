@@ -1,12 +1,16 @@
 import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { Router } from '@angular/router';
+import { EndecapodService, EneRecord } from '@ibfd/endecapod';
+import { TopicConfig } from '@ibfd/topicsearch';
+import { AppConfigData } from 'src/app/model/config/app-config-data';
+import { AppConfigService } from 'src/app/services/app-config.service';
 import { DWayService } from 'src/app/services/d-way.service';
 
 @Component({
   selector: 'app-doc-preview',
   templateUrl: './doc-preview.component.html',
   styleUrls: ['./doc-preview.component.css'],
-  providers: [DWayService]
+  providers: [DWayService, EndecapodService]
 })
 export class DocPreviewComponent implements OnInit {
 
@@ -14,7 +18,7 @@ export class DocPreviewComponent implements OnInit {
   docUrl: string;
 
   @Input()
-  selectedDoc: any;
+  selectedRecords: EneRecord[];
 
   documentData: any;
   previewShow: boolean = false;
@@ -24,12 +28,23 @@ export class DocPreviewComponent implements OnInit {
   showOutlinePreviewDiv: boolean = false;
 
 
+
+  topicConfigs: TopicConfig[] = [];
+
+  appConfigData: AppConfigData;
+
+
+
   constructor(
     private dWayService: DWayService,
-    private router: Router
+    private router: Router,
+    private appConfigService: AppConfigService,
   ) { }
 
   ngOnInit(): void {
+    this.appConfigData = new AppConfigData(this.appConfigService.config);
+    this.topicConfigs = this.appConfigData.getTopicFeatureConfig().getTopicNavigationConfig().getEnabledTaxonomies();
+
   }
 
 
@@ -41,7 +56,6 @@ export class DocPreviewComponent implements OnInit {
             this.documentData = JSON.parse(response.body);
             this.previewShow = true;
 
-            console.log("🚀 ~ file: doc-preview.component.ts:44 ~ DocPreviewComponent ~ ngOnChanges ~ this.selectedDoc:", this.selectedDoc)
 
           }
         );

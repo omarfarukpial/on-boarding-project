@@ -29,7 +29,7 @@ export class ResultsComponent implements OnInit {
 
 
   checkedRecord: any = [];
-  selectedRecord: any = [];
+  selectedRecords: EneRecord[] = [];
 
 
   totalResultCount: number;
@@ -148,7 +148,6 @@ export class ResultsComponent implements OnInit {
     //   }
 
     //   this.records = this.records.concat(data);
-    //   console.log("🚀 ~ file: results.component.ts:120 ~ ResultsComponent ~ this.resultService.data$.subscribe ~ this.records:", this.records)
     //   this.totalResultCount = this.resultService.getTotalResultCount();
     //   this.loading = false;
     // });
@@ -163,7 +162,7 @@ export class ResultsComponent implements OnInit {
   // }
 
   onShowDoc(selectedDoc: any) {
-    this.selectedRecord = selectedDoc;
+    this.selectedRecords = selectedDoc.records;
     this.selectedDocPath = selectedDoc.records[0].properties.relative_path;
   }
 
@@ -183,7 +182,7 @@ export class ResultsComponent implements OnInit {
 
     if (record.records[0].properties.checked) {
       this.selectedCheckboxes.push(record.records[0].properties.relative_path);
-      this.checkedRecord = record;
+      this.resultService.setCheckedRecord(record.records);
     } else {
       const index = this.selectedCheckboxes.indexOf(record.records[0].properties.relative_path);
       if (index !== -1) {

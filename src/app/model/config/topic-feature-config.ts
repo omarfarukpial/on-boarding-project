@@ -1,4 +1,4 @@
-import { TopicConfig } from 'local_modules/topic/dist';
+import { TopicConfig } from '@ibfd/topicsearch';
 
 export class TopicTypeConfig {
   constructor(private config) { }

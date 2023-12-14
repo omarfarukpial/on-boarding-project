@@ -41,6 +41,15 @@
     <div *ngIf="showDocumentPreviewDiv" class="container p-3 mt-3">
       <div class="docPreviewSection" [innerHTML]="documentData.body"></div>
     </div>
+
+    <div *ngIf="showTopicPreviewDiv" class="container mt-3">
+      <app-doc-topic
+        *ngFor="let topicConfig of topicConfigs"
+        [topicConfig]="topicConfig"
+        [records]="selectedRecords"
+      ></app-doc-topic>
+    </div>
+
     <div *ngIf="showOutlinePreviewDiv" class="container mt-3">
       <ul style="list-style: none">
         <ng-container *ngFor="let outline of documentData.outline.nodes">

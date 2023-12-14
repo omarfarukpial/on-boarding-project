@@ -26,6 +26,7 @@ import { DocPreviewComponent } from './components/doc-preview/doc-preview.compon
 import { DocPrintComponent } from './components/doc-print/doc-print.component';
 import { DocOutlineComponent } from './components/doc-outline/doc-outline.component';
 import { DocTopicComponent } from './components/doc-topic/doc-topic.component';
+import { TopicSearchModule } from '@ibfd/topicsearch';
 
 
 const appConfigFactory = (appConfigService: AppConfigService) => {
@@ -59,6 +60,7 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     BsDropdownModule,
     PaginatorModule,
     ProgressSpinnerModule,
+    TopicSearchModule
   ],
   providers: [
     {
